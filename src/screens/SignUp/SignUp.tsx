@@ -1,10 +1,11 @@
-import React, {FC, useEffect, useState} from 'react';
-import {View, Text, TextInput} from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation/Homestack';
+import React, { FC, useState } from 'react';
+import { View, Text, TextInput, KeyboardAvoidingView } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation/Homestack';
+import colors from '../../config/Colors';
 import styles from './SignUp.styles';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getUserDetails} from '../Login/Login';
 
@@ -24,50 +25,50 @@ export type UserDetailsObject = {
   email: string;
 };
 
-const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
+const SignUp: FC<SignUpScreenProps> = ({ navigation, route }) => {
   const [UserDetailsArrayState, setUserDetailsArrayState] = useState<
   UserDetailsObject[]
   >([]);
   const [username, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [emailId, setEmailId] = useState<string>('');
   const [dob, setDob] = useState<string>('');
-
-  useEffect(() => {
-    getUserDetails().then(parsedArray => {
-      setUserDetailsArrayState(parsedArray);
-    });
-  }, []);
+  const [email, SetEmail] = useState<string>('');
+  const [mobile, setMobile] = useState<string>('');
+  // const GetUserDetails = async () => {
+  //   let Array = AsyncStorage.getItem('UserDetailsArray');
+  //   if (Array) {
+  //     setUserDetailsArrayState[Array];
+  //   }
+  // };
 
   const SaveUserDetails = async () => {
     let NewObj: UserDetailsObject = {
       username,
       password,
-      email: emailId,
-      dob,
     };
-    if (UserDetailsArrayState.length > 0) {
-      let newArray = [...UserDetailsArrayState, NewObj];
-      AsyncStorage.setItem('userDetails', JSON.stringify(newArray));
-    } else {
-      let newArray = [NewObj];
-      AsyncStorage.setItem('userDetails', JSON.stringify(newArray));
-    }
+    AsyncStorage.setItem('userDetails', JSON.stringify(NewObj));
   };
 
   type TextInputTypes = {
-    label: 'username' | 'password' | 'dob' | 'email';
+    label: 'username' | 'password' | 'dob' | 'email' | 'mobile';
   };
-  const TextInputCustom: FC<TextInputTypes> = ({label}) => {
+  const TextInputCustom: FC<TextInputTypes> = ({ label }) => {
     return (
       <View>
-        <Text style={{}}>{label}</Text>
+        <Text style={styles.label}>{label}</Text>
         <TextInput
-          style={{}}
+          style={styles.input}
           onChangeText={text => {
             if (label === 'username') {
               setUserName(text);
             } else if (label === 'dob') {
+              setDob(text)
+            } else if (label === 'password') {
+              setPassword(text)
+            } else if (label === 'email') {
+              SetEmail(text)
+            } else {
+              setMobile(text)
             }
           }}
         />
@@ -75,13 +76,16 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
     );
   };
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcomeFont}>Welcome</Text>
+    <KeyboardAvoidingView style={styles.container}>
       <TextInputCustom label="username" />
-      <TouchableOpacity onPress={SaveUserDetails}>
-        <Text>Submit</Text>
+      <TextInputCustom label="password" />
+      <TextInputCustom label="dob" />
+      <TextInputCustom label="email" />
+      <TextInputCustom label="mobile" />
+      <TouchableOpacity onPress={() => { }} style={styles.button}>
+        <Text style={styles.submit}>Submit</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
