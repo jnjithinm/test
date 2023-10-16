@@ -1,12 +1,12 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {View, Text, TextInput} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation/Homestack';
-import colors from '../../config/Colors';
 import styles from './SignUp.styles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getUserDetails} from '../Login/Login';
 
 type SignUpNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
 
@@ -17,7 +17,7 @@ interface SignUpScreenProps {
   route: SignUpRouteProp;
 }
 
-export type constUserDetailsObject = {
+export type UserDetailsObject = {
   username: string;
   password: string;
   dob: string;
@@ -26,23 +26,33 @@ export type constUserDetailsObject = {
 
 const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
   const [UserDetailsArrayState, setUserDetailsArrayState] = useState<
-    constUserDetailsObject[]
+  UserDetailsObject[]
   >([]);
   const [username, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  // const GetUserDetails = async () => {
-  //   let Array = AsyncStorage.getItem('UserDetailsArray');
-  //   if (Array) {
-  //     setUserDetailsArrayState[Array];
-  //   }
-  // };
+  const [emailId, setEmailId] = useState<string>('');
+  const [dob, setDob] = useState<string>('');
+
+  useEffect(() => {
+    getUserDetails().then(parsedArray => {
+      setUserDetailsArrayState(parsedArray);
+    });
+  }, []);
 
   const SaveUserDetails = async () => {
-    let NewObj = {
+    let NewObj: UserDetailsObject = {
       username,
       password,
+      email: emailId,
+      dob,
     };
-    AsyncStorage.setItem('userDetails', JSON.stringify(NewObj));
+    if (UserDetailsArrayState.length > 0) {
+      let newArray = [...UserDetailsArrayState, NewObj];
+      AsyncStorage.setItem('userDetails', JSON.stringify(newArray));
+    } else {
+      let newArray = [NewObj];
+      AsyncStorage.setItem('userDetails', JSON.stringify(newArray));
+    }
   };
 
   type TextInputTypes = {
@@ -68,7 +78,7 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
     <View style={styles.container}>
       <Text style={styles.welcomeFont}>Welcome</Text>
       <TextInputCustom label="username" />
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity onPress={SaveUserDetails}>
         <Text>Submit</Text>
       </TouchableOpacity>
     </View>
