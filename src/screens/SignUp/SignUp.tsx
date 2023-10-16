@@ -70,6 +70,7 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
         <Text style={{}}>{label}</Text>
         <TextInput
           onChangeText={text => setInputValue(text)}
+          value={inputValue}
           onBlur={() => {
             if (label === 'email') {
               let {errorFlag, error} = validateField({
@@ -79,7 +80,7 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
               errorFlag ? (errorFinal = error) : setEmailId(inputValue);
             } else if (label === 'Mobile Number') {
               const {errorFlag, error} = validateField({
-                FieldName: 'mobilenumber',
+                FieldName: 'Mobile Number',
                 value: inputValue,
               });
               errorFlag ? (errorFinal = error) : setMobileNumber(inputValue);
