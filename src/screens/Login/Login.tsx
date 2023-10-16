@@ -49,12 +49,12 @@ const Login: FC<LoginScreenProps> = ({navigation, route}) => {
       item => item.username === username,
     );
 
-    if (findedUser) {
+    if (findedUser && findedUser.password === password) {
       AsyncStorage.setItem('currentUserDetails', JSON.stringify(findedUser));
+      navigation.navigate('Home');
     } else {
       console.log('Username or password does not match ! Try again !');
     }
-    navigation.navigate('Home');
   };
 
   return (
