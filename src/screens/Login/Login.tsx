@@ -1,13 +1,13 @@
-import React, {FC, useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation/Homestack';
+import React, { FC, useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Alert, Image } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation/Homestack';
 import colors from '../../config/Colors';
 import styles from './Login.styles';
-import {TextInput} from 'react-native-gesture-handler';
+import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {UserDetailsObject} from '../SignUp/SignUp';
+import { UserDetailsObject } from '../SignUp/SignUp';
 
 type LoginNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -44,7 +44,7 @@ const GetAdminDetails = async () => {
   return [];
 };
 
-const Login: FC<LoginScreenProps> = ({navigation, route}) => {
+const Login: FC<LoginScreenProps> = ({ navigation, route }) => {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [UserDetailsArrayState, setUserDetailsArrayState] = useState<
@@ -91,6 +91,7 @@ const Login: FC<LoginScreenProps> = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
+      <Image source={{ uri: 'https://www.shutterstock.com/image-vector/application-on-mobile-smartphone-icons-260nw-1908968959.jpg' }} style={{ justifyContent: 'center', height: 200, width: 300 ,borderRadius:10}} />
       <View style={styles.input}>
         <TextInput
           placeholder="username"

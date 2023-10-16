@@ -34,11 +34,10 @@ const Admin: FC<AdminScreenProps> = ({ navigation, route }) => {
     await AsyncStorage.setItem('userDetails', JSON.stringify(filteredArray));
   }
 
-  const OnDelete = (userName: string) => {
-    let filteredArray = UserDetailsArrayState.filter(item => {
-      item.username === userName;
-    });
-    // console.log('dert',UserDetailsArrayState)
+  const OnDelete =  (userName: string) => {
+    let filteredArray = UserDetailsArrayState.filter(item => (
+      item.username!== userName
+    ));
     setUserDetailsArrayState(filteredArray);
     DeleteItemAsync(filteredArray);
     // console.log('arr',filteredArray)
@@ -78,7 +77,7 @@ const Admin: FC<AdminScreenProps> = ({ navigation, route }) => {
             <TouchableOpacity
               key={item.username}
               onPress={() => OnDelete(item.username)}
-              style={{ alignSelf: 'flex-end', marginTop: 15 }}>
+              style={{alignSelf: 'flex-end', marginTop: 15}}>
               <Image
                 source={require('../../assets/images/delete.png')}
                 style={{ width: 25, height: 25 }}

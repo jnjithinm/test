@@ -173,7 +173,8 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
           isActive
             ? styles.button
             : {...styles.button, ...styles.buttondisabled}
-        }>
+        }
+        disabled={!isActive}>
         <Text style={{fontSize:20,color:colors.black,fontWeight:'600'}}>Submit</Text>
       </TouchableOpacity>
     </View>
