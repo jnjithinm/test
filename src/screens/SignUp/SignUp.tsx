@@ -59,7 +59,7 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
   };
 
   type TextInputTypes = {
-    label: 'username' | 'password' | 'dob' | 'email' | 'mobilenumber';
+    label: 'username' | 'password' | 'dob' | 'email' | 'Mobile Number';
     numPad?: boolean;
   };
   const TextInputCustom: FC<TextInputTypes> = ({label, numPad}) => {
@@ -82,7 +82,7 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
                 value: emailId,
               });
               errorFinal=error;
-            } else if (label === 'mobilenumber') {
+            } else if (label === 'Mobile Number') {
               const {errorFlag, error} = validateField({
                 FieldName: 'mobilenumber',
                 value: mobileNumber,
@@ -101,7 +101,7 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
       <TextInputCustom label="username" />
       <TextInputCustom label="password" />
       <TextInputCustom label="email" />
-      <TextInputCustom label="username" />
+      <TextInputCustom label="Mobile Number" />
       <TouchableOpacity onPress={SaveUserDetails}>
         <Text>Submit</Text>
       </TouchableOpacity>
