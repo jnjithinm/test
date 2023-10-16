@@ -1,14 +1,14 @@
-import React, {FC, useEffect, useState} from 'react';
-import {View, Text, Image} from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation/Homestack';
+import React, { FC, useEffect, useState } from 'react';
+import { View, Text, Image } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation/Homestack';
 import styles from './Admin.styes';
 import colors from '../../config/Colors';
-import {UserDetailsObject} from '../SignUp/SignUp';
+import { UserDetailsObject } from '../SignUp/SignUp';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getUserDetails} from '../Login/Login';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { getUserDetails } from '../Login/Login';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type AdminNavigationProp = StackNavigationProp<RootStackParamList, 'Admin'>;
 
@@ -19,34 +19,36 @@ interface AdminScreenProps {
   route: AdminRouteProp;
 }
 
-const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
+const Admin: FC<AdminScreenProps> = ({ navigation, route }) => {
   const [UserDetailsArrayState, setUserDetailsArrayState] = useState<
     UserDetailsObject[]
   >([]);
 
   useEffect(() => {
     getUserDetails().then(parsedObject => {
-        setUserDetailsArrayState(parsedObject);
-      });
+      setUserDetailsArrayState(parsedObject);
+    });
   }, []);
 
-  const DeleteItemAsync=async(filteredArray:UserDetailsObject[])=>{
- await   AsyncStorage.setItem('userDetails', JSON.stringify(filteredArray));
+  const DeleteItemAsync = async (filteredArray: UserDetailsObject[]) => {
+    await AsyncStorage.setItem('userDetails', JSON.stringify(filteredArray));
   }
 
-  const OnDelete =  (userName: string) => {
+  const OnDelete = (userName: string) => {
     let filteredArray = UserDetailsArrayState.filter(item => {
       item.username === userName;
     });
+    // console.log('dert',UserDetailsArrayState)
     setUserDetailsArrayState(filteredArray);
     DeleteItemAsync(filteredArray);
+    // console.log('arr',filteredArray)
   };
   return (
     <View style={styles.container}>
       {UserDetailsArrayState.map(item => {
         return (
           <View
-            key={item.dob}
+            key={item.username}
             style={{
               justifyContent: 'space-evenly',
               borderRadius: 15,
@@ -54,7 +56,7 @@ const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
               paddingVertical: 20,
               width: '80%',
               backgroundColor: colors.lightgrey,
-              marginTop:10
+              marginTop: 10
             }}>
             <View
               style={{
@@ -74,11 +76,12 @@ const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
             </View>
 
             <TouchableOpacity
+              key={item.username}
               onPress={() => OnDelete(item.username)}
-              style={{alignSelf: 'flex-end', marginTop: 15}}>
+              style={{ alignSelf: 'flex-end', marginTop: 15 }}>
               <Image
                 source={require('../../assets/images/delete.png')}
-                style={{width: 25, height: 25}}
+                style={{ width: 25, height: 25 }}
               />
             </TouchableOpacity>
           </View>

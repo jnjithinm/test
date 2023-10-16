@@ -69,13 +69,13 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
       } else {
         let newArray = [...UserDetailsArrayState, NewObj];
         Alert.alert('Signup Succesfully Completed');
-        navigation.navigate('Login');
+        navigation.replace('Login');
         AsyncStorage.setItem('userDetails', JSON.stringify(newArray));
       }
     } else {
       let newArray = [NewObj];
       Alert.alert('Succesfully registered!!');
-      navigation.navigate('Login');
+      navigation.replace('Login');
       AsyncStorage.setItem('userDetails', JSON.stringify(newArray));
     }
   };
