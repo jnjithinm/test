@@ -46,9 +46,9 @@ const Home: FC<HomeScreenProps> = ({ navigation, route }) => {
       dob,
       mobileNumber,
     };
-    let filteredArray = UserDetailsArrayState.filter(item => {
-      item.username == UserDetailsObject.username;
-    });
+    let filteredArray = UserDetailsArrayState.filter(item => (
+      item.username !== UserDetailsObject.username
+    ));
 
     let newArray = [...filteredArray, NewObj];
 

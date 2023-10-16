@@ -35,9 +35,9 @@ const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
   }
 
   const OnDelete =  (userName: string) => {
-    let filteredArray = UserDetailsArrayState.filter(item => {
-      item.username === userName;
-    });
+    let filteredArray = UserDetailsArrayState.filter(item => (
+      item.username!== userName
+    ));
     setUserDetailsArrayState(filteredArray);
     DeleteItemAsync(filteredArray);
   };
@@ -46,7 +46,7 @@ const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
       {UserDetailsArrayState.map(item => {
         return (
           <View
-            key={item.dob}
+            key={item.username}
             style={{
               justifyContent: 'space-evenly',
               borderRadius: 15,
@@ -75,6 +75,7 @@ const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
 
             <TouchableOpacity
               onPress={() => OnDelete(item.username)}
+              key={item.username}
               style={{alignSelf: 'flex-end', marginTop: 15}}>
               <Image
                 source={require('../../assets/images/delete.png')}
