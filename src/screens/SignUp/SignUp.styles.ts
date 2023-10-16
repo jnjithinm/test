@@ -14,12 +14,13 @@ const styles=StyleSheet.create({
     },
     input: {
 
-        borderColor: 'black',
+        // borderColor: 'black',
         borderWidth: .7,
         width:'75%',
         marginVertical: 15,
         borderRadius:15,
-        paddingHorizontal:5
+        paddingHorizontal:5,
+        borderColor:colors.lineargradientbuttondisabled
         // padding:20
     },
     button: {
@@ -28,7 +29,8 @@ const styles=StyleSheet.create({
         paddingVertical:'3%',
         alignItems: 'center',
         borderRadius:15,
-        marginTop:'5%'
+        marginTop:'5%',
+      
     },
     buttondisabled:{
         backgroundColor: colors.lightgrey,

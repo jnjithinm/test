@@ -44,6 +44,11 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
   const [emailId, setEmailId] = useState<string>('');
   const [dob, setDob] = useState<string>('');
   const [mobileNumber, setMobileNumber] = useState<string>('');
+  const [usernameErrorMsg, setUserNameErrorMsg] = useState<string>('');
+  const [passwordErrorMsg, setPasswordErrorMsg] = useState<string>('');
+  const [emailIdErrorMsg, setEmailIdErrorMsg] = useState<string>('');
+  const [dobErrorMsg, setDobErrorMsg] = useState<string>('');
+  const [mobileNumberErrorMsg, setMobileNumberErrorMsg] = useState<string>('');
   const {validateField} = useValidation();
 
   useEffect(() => {
@@ -118,6 +123,7 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
       </View>
     );
   };
+  
 
   let isActive = useActive([username, password, emailId, dob, mobileNumber]);
 
@@ -127,38 +133,45 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
         <View style={styles.input}>
           <TextInput
             placeholder="username"
-            placeholderTextColor={'black'}
+            placeholderTextColor={'grey'}
             onChangeText={t => setUserName(t)}
+            style={{paddingHorizontal:5}}
           />
         </View>
         <View style={styles.input}>
           <TextInput
             placeholder="password"
-            placeholderTextColor={'black'}
+            placeholderTextColor={'grey'}
             onChangeText={t => setPassword(t)}
+            style={{paddingHorizontal:5}}
           />
         </View>
         <View style={styles.input}>
           <TextInput
             placeholder="dob"
-            placeholderTextColor={'black'}
+            placeholderTextColor={'grey'}
             onChangeText={t => setDob(t)}
+            style={{paddingHorizontal:5}}
           />
         </View>
         <View style={styles.input}>
           <TextInput
             placeholder="email"
-            placeholderTextColor={'black'}
+            placeholderTextColor={'grey'}
             onChangeText={t => setEmailId(t)}
+            style={{paddingHorizontal:5}}
           />
         </View>
         <View style={styles.input}>
           <TextInput
             placeholder="Mobile Number"
-            placeholderTextColor={'black'}
+            placeholderTextColor={'grey'}
             onChangeText={t => setMobileNumber(t)}
             maxLength={10}
+            style={{paddingHorizontal:5}}
+          
             keyboardType="number-pad"
+          
           />
         </View>
         {/* <TextInputCustom label="username" />
