@@ -24,7 +24,7 @@ const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
   const [UserDetailsArrayState, setUserDetailsArrayState] = useState<
     UserDetailsObject[]
   >([]);
-  
+
   const GetUserRefrestDetails=()=>{
     getUserDetails().then(parsedObject => {
         setUserDetails(parsedObject);
@@ -39,7 +39,7 @@ const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
       item.username == userName;
     });
     AsyncStorage.setItem('userDetails', JSON.stringify(filteredArray));
-    GetUserRefrestDetails();
+    setUserDetails(filteredArray);
   };
   return (
     <View style={styles.container}>
@@ -54,6 +54,7 @@ const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
               paddingVertical: 20,
               width: '80%',
               backgroundColor: colors.lightgrey,
+              marginTop:10
             }}>
             <View
               style={{
