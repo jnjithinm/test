@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {View, Text, TextInput} from 'react-native';
+import {View, Text, TextInput, Keyboard} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation/Homestack';
@@ -7,6 +7,7 @@ import styles from './SignUp.styles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getUserDetails} from '../Login/Login';
+import useValidation from '../../hooks/useValidation';
 
 type SignUpNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
 
@@ -26,12 +27,14 @@ export type UserDetailsObject = {
 
 const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
   const [UserDetailsArrayState, setUserDetailsArrayState] = useState<
-  UserDetailsObject[]
+    UserDetailsObject[]
   >([]);
   const [username, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [emailId, setEmailId] = useState<string>('');
   const [dob, setDob] = useState<string>('');
+  const [mobileNumber, setMobileNumber] = useState<string>('');
+  const {validateField} = useValidation();
 
   useEffect(() => {
     getUserDetails().then(parsedArray => {
@@ -56,9 +59,11 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
   };
 
   type TextInputTypes = {
-    label: 'username' | 'password' | 'dob' | 'email';
+    label: 'username' | 'password' | 'dob' | 'email' | 'mobilenumber';
+    numPad?: boolean;
   };
-  const TextInputCustom: FC<TextInputTypes> = ({label}) => {
+  const TextInputCustom: FC<TextInputTypes> = ({label, numPad}) => {
+    let errorFlagFinal, errorFinal;
     return (
       <View>
         <Text style={{}}>{label}</Text>
@@ -70,13 +75,32 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
             } else if (label === 'dob') {
             }
           }}
+          onBlur={() => {
+            if (label === 'email') {
+              let {errorFlag, error} = validateField({
+                FieldName: 'email',
+                value: emailId,
+              });
+              errorFinal=error;
+            } else if (label === 'mobilenumber') {
+              const {errorFlag, error} = validateField({
+                FieldName: 'mobilenumber',
+                value: mobileNumber,
+              });
+              errorFinal=error;
+            }
+          }}
         />
+        {errorFinal && <Text>{errorFinal}</Text>}
       </View>
     );
   };
   return (
     <View style={styles.container}>
       <Text style={styles.welcomeFont}>Welcome</Text>
+      <TextInputCustom label="username" />
+      <TextInputCustom label="password" />
+      <TextInputCustom label="emailID" />
       <TextInputCustom label="username" />
       <TouchableOpacity onPress={SaveUserDetails}>
         <Text>Submit</Text>

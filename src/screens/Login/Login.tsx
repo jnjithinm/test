@@ -76,10 +76,10 @@ const Login: FC<LoginScreenProps> = ({navigation, route}) => {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => console.log('logged in!!')}>
+        onPress={onPressLogin}>
         <Text style={styles.login}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.register} onPress={onPressLogin}>
+      <TouchableOpacity style={styles.register} >
         <Text
           style={{
             fontSize: 15,
