@@ -3,8 +3,9 @@ import colors from "../../config/Colors";
 
 const styles=StyleSheet.create({
     container:{
-        justifyContent:'center',
+        // justifyContent:'center',
         alignItems:'center',
+        marginTop:'10%',
         height:'100%'
     },
     welcomeFont:{
@@ -12,11 +13,13 @@ const styles=StyleSheet.create({
         color:colors.primarydark
     },
     input: {
-        width: 340,
-        // height: 100,
+
         borderColor: 'black',
         borderWidth: .7,
-        margin: 20,
+        width:'75%',
+        marginVertical: 15,
+        borderRadius:15,
+        paddingHorizontal:5
         // padding:20
     },
     button: {

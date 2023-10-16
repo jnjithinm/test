@@ -118,7 +118,7 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
   };
   return (
     <View style={styles.container}>
-      <View>
+      <View style={{width:'100%',alignItems:'center'}}>
         <View style={styles.input}>
           <TextInput
             placeholder="username"

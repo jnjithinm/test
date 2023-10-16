@@ -20,14 +20,13 @@ interface AdminScreenProps {
 }
 
 const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
-  const [userDetails, setUserDetails] = useState<UserDetailsObject[]>([]);
   const [UserDetailsArrayState, setUserDetailsArrayState] = useState<
     UserDetailsObject[]
   >([]);
 
   const GetUserRefrestDetails=()=>{
     getUserDetails().then(parsedObject => {
-        setUserDetails(parsedObject);
+        setUserDetailsArrayState(parsedObject);
       });
   }
   useEffect(() => {
@@ -36,14 +35,14 @@ const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
 
   const OnDelete = async (userName: string) => {
     let filteredArray = UserDetailsArrayState.filter(item => {
-      item.username == userName;
+      item.username === userName;
     });
     AsyncStorage.setItem('userDetails', JSON.stringify(filteredArray));
-    setUserDetails(filteredArray);
+    setUserDetailsArrayState(filteredArray);
   };
   return (
     <View style={styles.container}>
-      {userDetails.map(item => {
+      {UserDetailsArrayState.map(item => {
         return (
           <View
             key={item.dob}
