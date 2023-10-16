@@ -23,19 +23,19 @@ export const getUserDetails = async () => {
     const storedArray = await AsyncStorage.getItem('userDetails');
     if (storedArray) {
       const parsedArray = JSON.parse(storedArray);
-      return parsedArray; 
+      return parsedArray;
     }
   } catch (error) {
     console.error('Error fetching UserDetailsArray from AsyncStorage:', error);
   }
-  return []; 
+  return [];
 };
 
 const Login: FC<LoginScreenProps> = ({navigation, route}) => {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [UserDetailsArrayState, setUserDetailsArrayState] = useState<
-  UserDetailsObject[]
+    UserDetailsObject[]
   >([]);
 
   useEffect(() => {
@@ -50,10 +50,11 @@ const Login: FC<LoginScreenProps> = ({navigation, route}) => {
     );
 
     if (findedUser) {
-      AsyncStorage.setItem('currentUserDetails',JSON.stringify(findedUser));
+      AsyncStorage.setItem('currentUserDetails', JSON.stringify(findedUser));
     } else {
       console.log('Username or password does not match ! Try again !');
     }
+    navigation.navigate('Home');
   };
 
   return (
@@ -78,9 +79,7 @@ const Login: FC<LoginScreenProps> = ({navigation, route}) => {
         onPress={() => console.log('logged in!!')}>
         <Text style={styles.login}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.register}
-        onPress={onPressLogin}>
+      <TouchableOpacity style={styles.register} onPress={onPressLogin}>
         <Text
           style={{
             fontSize: 15,
