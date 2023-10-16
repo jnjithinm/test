@@ -23,11 +23,17 @@ const styles=StyleSheet.create({
         // padding:20
     },
     button: {
-        backgroundColor: 'grey',
-        width: 100,
-        height: 30,
-        alignItems: 'center'
+        backgroundColor: colors.greennotification,
+        paddingHorizontal:'12%',
+        paddingVertical:'3%',
+        alignItems: 'center',
+        borderRadius:15,
+        marginTop:'5%'
     },
+    buttondisabled:{
+        backgroundColor: colors.lightgrey,
+    }
+
 })
 
 export default styles

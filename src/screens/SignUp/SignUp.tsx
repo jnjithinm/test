@@ -15,6 +15,8 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getUserDetails} from '../Login/Login';
 import useValidation from '../../hooks/useValidation';
+import useActive from '../../hooks/useActive';
+import colors from '../../config/Colors';
 
 type SignUpNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
 
@@ -116,9 +118,12 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
       </View>
     );
   };
+
+  let isActive = useActive([username, password, emailId, dob, mobileNumber]);
+
   return (
     <View style={styles.container}>
-      <View style={{width:'100%',alignItems:'center'}}>
+      <View style={{width: '100%', alignItems: 'center'}}>
         <View style={styles.input}>
           <TextInput
             placeholder="username"
@@ -149,9 +154,11 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
         </View>
         <View style={styles.input}>
           <TextInput
-            placeholder="mobile Number"
+            placeholder="Mobile Number"
             placeholderTextColor={'black'}
             onChangeText={t => setMobileNumber(t)}
+            maxLength={10}
+            keyboardType="number-pad"
           />
         </View>
         {/* <TextInputCustom label="username" />
@@ -160,8 +167,14 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
         <TextInputCustom label="email" />
         <TextInputCustom label="Mobile Number" /> */}
       </View>
-      <TouchableOpacity onPress={SaveUserDetails}>
-        <Text>Submit</Text>
+      <TouchableOpacity
+        onPress={SaveUserDetails}
+        style={
+          isActive
+            ? styles.button
+            : {...styles.button, ...styles.buttondisabled}
+        }>
+        <Text style={{fontSize:20,color:colors.black,fontWeight:'600'}}>Submit</Text>
       </TouchableOpacity>
     </View>
   );

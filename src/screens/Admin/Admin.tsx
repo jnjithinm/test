@@ -24,21 +24,22 @@ const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
     UserDetailsObject[]
   >([]);
 
-  const GetUserRefrestDetails=()=>{
+  useEffect(() => {
     getUserDetails().then(parsedObject => {
         setUserDetailsArrayState(parsedObject);
       });
-  }
-  useEffect(() => {
-    GetUserRefrestDetails();
   }, []);
 
-  const OnDelete = async (userName: string) => {
+  const DeleteItemAsync=async(filteredArray:UserDetailsObject[])=>{
+ await   AsyncStorage.setItem('userDetails', JSON.stringify(filteredArray));
+  }
+
+  const OnDelete =  (userName: string) => {
     let filteredArray = UserDetailsArrayState.filter(item => {
       item.username === userName;
     });
-    AsyncStorage.setItem('userDetails', JSON.stringify(filteredArray));
     setUserDetailsArrayState(filteredArray);
+    DeleteItemAsync(filteredArray);
   };
   return (
     <View style={styles.container}>
