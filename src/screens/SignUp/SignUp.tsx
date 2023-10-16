@@ -100,7 +100,7 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
       <Text style={styles.welcomeFont}>Welcome</Text>
       <TextInputCustom label="username" />
       <TextInputCustom label="password" />
-      <TextInputCustom label="emailID" />
+      <TextInputCustom label="email" />
       <TextInputCustom label="username" />
       <TouchableOpacity onPress={SaveUserDetails}>
         <Text>Submit</Text>
