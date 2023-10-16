@@ -50,7 +50,6 @@ const Login: FC<LoginScreenProps> = ({navigation, route}) => {
   const [UserDetailsArrayState, setUserDetailsArrayState] = useState<
     UserDetailsObject[]
   >([]);
-  // const [adminDetails,setAdminDetails]=useState<{}>({username:'',})
 
   useEffect(() => {
     getUserDetails().then(parsedArray => {
