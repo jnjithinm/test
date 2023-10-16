@@ -1,13 +1,13 @@
-import React, { FC, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../navigation/Homestack';
+import React, {FC, useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RouteProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation/Homestack';
 import colors from '../../config/Colors';
 import styles from './Login.styles';
-import { TextInput } from 'react-native-gesture-handler';
+import {TextInput} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserDetailsObject } from '../SignUp/SignUp';
+import {UserDetailsObject} from '../SignUp/SignUp';
 
 type LoginNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -31,18 +31,48 @@ export const getUserDetails = async () => {
   return [];
 };
 
-const Login: FC<LoginScreenProps> = ({ navigation, route }) => {
+const GetAdminDetails = async () => {
+  try {
+    const storedArray = await AsyncStorage.getItem('AdminDetails');
+    if (storedArray) {
+      const parsedArray = JSON.parse(storedArray);
+      return parsedArray;
+    }
+  } catch (error) {
+    console.error('Error fetching UserDetailsArray from AsyncStorage:', error);
+  }
+  return [];
+};
+
+const Login: FC<LoginScreenProps> = ({navigation, route}) => {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [UserDetailsArrayState, setUserDetailsArrayState] = useState<
     UserDetailsObject[]
   >([]);
+  // const [adminDetails,setAdminDetails]=useState<{}>({username:'',})
 
   useEffect(() => {
     getUserDetails().then(parsedArray => {
       setUserDetailsArrayState(parsedArray);
     });
   });
+
+  const SaveAdminDetails = async () => {
+    const AdminDetails = {
+      username: 'admin',
+      password: 'admin123',
+    };
+    await AsyncStorage.setItem('AdminDetails', JSON.stringify(AdminDetails));
+  };
+
+  useEffect(() => {
+    GetAdminDetails().then(parsedAdminDetails => {
+      if (!parsedAdminDetails.username) {
+        SaveAdminDetails();
+      }
+    });
+  }, []);
 
   const onPressLogin = () => {
     // console.log('user', UserDetailsArrayState)
@@ -53,6 +83,8 @@ const Login: FC<LoginScreenProps> = ({ navigation, route }) => {
     if (findedUser && findedUser.password === password) {
       AsyncStorage.setItem('currentUserDetails', JSON.stringify(findedUser));
       navigation.navigate('Home', findedUser);
+    } else if (username === 'admin' && password === 'admin123') {
+      navigation.navigate('Admin');
     } else {
       Alert.alert('Username or password does not match ! Try again !');
     }
@@ -75,12 +107,12 @@ const Login: FC<LoginScreenProps> = ({ navigation, route }) => {
           onChangeText={t => setPassword(t)}
         />
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={onPressLogin}>
+      <TouchableOpacity style={styles.button} onPress={onPressLogin}>
         <Text style={styles.login}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.register} onPress={() => navigation.navigate('SignUp')}>
+      <TouchableOpacity
+        style={styles.register}
+        onPress={() => navigation.navigate('SignUp')}>
         <Text
           style={{
             fontSize: 15,

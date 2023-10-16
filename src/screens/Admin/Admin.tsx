@@ -1,14 +1,14 @@
-import React, { FC, useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../navigation/Homestack';
+import React, {FC, useEffect, useState} from 'react';
+import {View, Text, Image} from 'react-native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RouteProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation/Homestack';
 import styles from './Admin.styes';
 import colors from '../../config/Colors';
-import { UserDetailsObject } from '../SignUp/SignUp';
+import {UserDetailsObject} from '../SignUp/SignUp';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUserDetails } from '../Login/Login';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {getUserDetails} from '../Login/Login';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 type AdminNavigationProp = StackNavigationProp<RootStackParamList, 'Admin'>;
 
@@ -19,22 +19,27 @@ interface AdminScreenProps {
   route: AdminRouteProp;
 }
 
-const Admin: FC<AdminScreenProps> = ({ navigation, route }) => {
+const Admin: FC<AdminScreenProps> = ({navigation, route}) => {
   const [userDetails, setUserDetails] = useState<UserDetailsObject[]>([]);
   const [UserDetailsArrayState, setUserDetailsArrayState] = useState<
     UserDetailsObject[]
   >([]);
-  useEffect(() => {
+  
+  const GetUserRefrestDetails=()=>{
     getUserDetails().then(parsedObject => {
-      setUserDetails(parsedObject);
-      // console.log('user list', parsedObject);
-    });
+        setUserDetails(parsedObject);
+      });
+  }
+  useEffect(() => {
+    GetUserRefrestDetails();
   }, []);
+
   const OnDelete = async (userName: string) => {
     let filteredArray = UserDetailsArrayState.filter(item => {
       item.username == userName;
     });
     AsyncStorage.setItem('userDetails', JSON.stringify(filteredArray));
+    GetUserRefrestDetails();
   };
   return (
     <View style={styles.container}>
@@ -43,24 +48,37 @@ const Admin: FC<AdminScreenProps> = ({ navigation, route }) => {
           <View
             key={item.dob}
             style={{
-              flexDirection: 'row',
               justifyContent: 'space-evenly',
-              borderWidth: 0.4,
-              margin: 20,
-              borderRadius: 10,
-              padding: 20,
+              borderRadius: 15,
+              paddingHorizontal: 20,
+              paddingVertical: 20,
+              width: '80%',
+              backgroundColor: colors.lightgrey,
             }}>
-            <View style={{ justifyContent: 'space-evenly' }}>
-              <Text>{item.username}</Text>
-              <Text> {item.dob}</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <Text style={styles.userNameFont}>{item.username}</Text>
+              <Text style={styles.mobileNumberFont}> {item.mobileNumber}</Text>
             </View>
-            <View style={{ justifyContent: 'space-evenly' }}>
-              <Text> {item.email}</Text>
-              <Text> {item.mobileNumber}</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <Text style={styles.emailIdFont}> {item.email}</Text>
+              <Text style={styles.dobFont}> {item.dob}</Text>
             </View>
 
-            <TouchableOpacity onPress={() => OnDelete(item.username)} style={{marginLeft:14}}>
-              <Text>Delete</Text>
+            <TouchableOpacity
+              onPress={() => OnDelete(item.username)}
+              style={{alignSelf: 'flex-end', marginTop: 15}}>
+              <Image
+                source={require('../../assets/images/delete.png')}
+                style={{width: 25, height: 25}}
+              />
             </TouchableOpacity>
           </View>
         );
