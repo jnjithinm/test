@@ -64,30 +64,25 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
   };
   const TextInputCustom: FC<TextInputTypes> = ({label, numPad}) => {
     let errorFlagFinal, errorFinal;
+    const [inputValue, setInputValue] = useState('');
     return (
-      <View>
+      <View style={{flex: 1}}>
         <Text style={{}}>{label}</Text>
         <TextInput
-          style={{}}
-          onChangeText={text => {
-            if (label === 'username') {
-              setUserName(text);
-            } else if (label === 'dob') {
-            }
-          }}
+          onChangeText={text => setInputValue(text)}
           onBlur={() => {
             if (label === 'email') {
               let {errorFlag, error} = validateField({
                 FieldName: 'email',
-                value: emailId,
+                value: inputValue,
               });
-              errorFinal=error;
+              errorFlag ? (errorFinal = error) : setEmailId(inputValue);
             } else if (label === 'Mobile Number') {
               const {errorFlag, error} = validateField({
                 FieldName: 'mobilenumber',
-                value: mobileNumber,
+                value: inputValue,
               });
-              errorFinal=error;
+              errorFlag ? (errorFinal = error) : setMobileNumber(inputValue);
             }
           }}
         />
@@ -98,10 +93,12 @@ const SignUp: FC<SignUpScreenProps> = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.welcomeFont}>Welcome</Text>
-      <TextInputCustom label="username" />
-      <TextInputCustom label="password" />
-      <TextInputCustom label="email" />
-      <TextInputCustom label="Mobile Number" />
+      <View>
+        <TextInputCustom label="username" />
+        <TextInputCustom label="password" />
+        <TextInputCustom label="email" />
+        <TextInputCustom label="Mobile Number" />
+      </View>
       <TouchableOpacity onPress={SaveUserDetails}>
         <Text>Submit</Text>
       </TouchableOpacity>
